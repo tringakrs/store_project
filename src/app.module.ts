@@ -5,10 +5,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import Post from './post/entities/post-entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UserModule } from './user/user.module';
+import { AuthenticationModule } from './authentication/authentication.module';
+import User from './user/entities/user-entity';
+import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { AuthenticationService } from './authentication/authentication.service';
+import { LocalStrategy } from './authentication/local.strategy';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [
-    PostModule,
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env'],
@@ -23,13 +30,21 @@ import { AppService } from './app.service';
           username: config.get<string>('DB_USERNAME'),
           password: config.get<string>('DB_PASSWORD'),
           database: config.get<string>('DB_NAME'),
-          entities: [Post],
+          entities: [Post, User],
           synchronize: true,
         };
       },
     }),
+    JwtModule.register({
+      secret: process.env.JWT_KEY,
+      signOptions: { expiresIn: '1000h' },
+    }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    PostModule,
+    UserModule,
+    AuthenticationModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AuthenticationService, LocalStrategy, UserService],
 })
 export class AppModule {}

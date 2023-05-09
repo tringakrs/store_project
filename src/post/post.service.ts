@@ -12,15 +12,13 @@ export default class PostsService {
     @InjectRepository(Posts)
     private postsRepository: Repository<Posts>,
   ) {}
-  private lastPostId = 0;
-  private posts: Posts[] = [];
 
   async create(createPostDto: CreatePostDto): Promise<Posts> {
     const data = { ...createPostDto };
     return await this.postsRepository.save(this.postsRepository.create(data));
   }
 
-  async getAllPosts(): Promise<Posts[]> {
+  async findAll(): Promise<Posts[]> {
     return await this.postsRepository.find();
   }
 
@@ -36,11 +34,9 @@ export default class PostsService {
 
   async remove(id: string) {
     const posts = await this.postsRepository.findOneBy({ id: parseInt(id) });
-
     if (!posts) {
       throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
     }
-
     return await this.postsRepository.remove(posts);
   }
 }
