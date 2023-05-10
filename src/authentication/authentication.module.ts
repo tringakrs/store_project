@@ -9,10 +9,12 @@ import { UserService } from 'src/user/user.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import User from 'src/user/entities/user-entity';
 import { ConfigService } from '@nestjs/config';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
     PassportModule,
+    UserModule,
     ConfigModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
