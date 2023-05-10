@@ -1,11 +1,13 @@
-import { Body, HttpException, HttpStatus } from '@nestjs/common';
+import { Body, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { TokenPayload } from './interface/tokenPayload.interface';
 import { QueryFailedError } from 'typeorm';
+import RegisterDto from './dtos/register.dto';
 
+@Injectable()
 export class AuthenticationService {
   constructor(
     private readonly usersService: UserService,
@@ -13,13 +15,15 @@ export class AuthenticationService {
     private readonly configService: ConfigService,
   ) {}
 
-  public async register(@Body() registrationData) {
+  public async register(@Body() registrationData: RegisterDto) {
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
     try {
       const createdUser = await this.usersService.create({
         ...registrationData,
         password: hashedPassword,
       });
+      console.log(createdUser);
+
       createdUser.password = undefined;
       return createdUser;
     } catch (error) {
