@@ -1,4 +1,4 @@
-import { Module, Post } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { PostController } from './post.controller';
 import PostsService from './post.service';
 import { TypeOrmModule } from '@nestjs/typeorm';

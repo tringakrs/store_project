@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
+import { CreateAddressDto } from 'src/address/dtos/create-address.dto';
 
 export class RegisterDto {
   @IsEmail()
@@ -12,6 +13,8 @@ export class RegisterDto {
   @IsNotEmpty()
   @MinLength(7)
   password: string;
+
+  address: CreateAddressDto;
 }
 
 export default RegisterDto;

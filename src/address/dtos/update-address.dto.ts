@@ -1,15 +1,16 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
-export class UpdatePostDto {
+export class UpdateAddressDto {
   @IsNumber()
   @IsOptional()
   id: number;
 
   @IsString()
-  @IsOptional()
-  content: string;
+  street: string;
 
   @IsString()
-  @IsOptional()
-  title: string;
+  city: string;
+
+  @IsString()
+  country: string;
 }

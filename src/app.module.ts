@@ -13,6 +13,10 @@ import { AuthenticationService } from './authentication/authentication.service';
 import { LocalStrategy } from './authentication/local.strategy';
 import { UserService } from './user/user.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Address } from './address/entities/address-entity';
+import { CategoryModule } from './category/category.module';
+import Category from './category/entities/category-entity';
+import { CategoryService } from './category/category.service';
 
 @Module({
   imports: [
@@ -30,7 +34,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           username: config.get<string>('DB_USERNAME'),
           password: config.get<string>('DB_PASSWORD'),
           database: config.get<string>('DB_NAME'),
-          entities: [Post, User],
+          entities: [Post, User, Address, Category],
           synchronize: true,
         };
       },
@@ -46,8 +50,15 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     PostModule,
     UserModule,
     AuthenticationModule,
+    CategoryModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AuthenticationService, LocalStrategy, UserService],
+  providers: [
+    AppService,
+    AuthenticationService,
+    LocalStrategy,
+    UserService,
+    CategoryService,
+  ],
 })
 export class AppModule {}

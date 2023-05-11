@@ -8,6 +8,7 @@ import {
   Res,
   Get,
   SerializeOptions,
+  Param,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
 import { RegisterDto } from './dtos/register.dto';
@@ -21,7 +22,9 @@ import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
   strategy: 'excludeAll',
 })
 export class AuthenticationController {
-  constructor(private readonly authenticationService: AuthenticationService) {}
+  constructor(
+    private readonly authenticationService: AuthenticationService,
+  ) {}
 
   @Post('register')
   async register(@Body() registrationData: RegisterDto) {
